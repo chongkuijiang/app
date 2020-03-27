@@ -19,6 +19,7 @@ void writeAlerts()
 
 	fp = fopen("../data/alerts.json", "w");
 	fputs(json, fp);
+	cJSON_free(json);
 	fclose(fp);
 }
 

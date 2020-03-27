@@ -48,6 +48,7 @@ void getImg(int newsock,const char* file)
 	{
 		memset(buf, '\0', 4096);
 		len = fread(buf,1, 4096, fp);
+		if (len < 0) break;
 		send(newsock, buf, len, 0);
 
 		sumlen += len;
@@ -87,8 +88,24 @@ void request(int newsock, char* buf)
 		}
 		if (strcmp(txt, "./img/") == 0) strcpy(txt, "./img/index.html");
 		printf("%s\n", txt);
-		getImg(newsock, txt);
+
+		if (strcmp(txt, "./img/info.txt") == 0) reqNumb(newsock, NULL);
+		else getImg(newsock, txt);
 	}
+}
+//------------------------------------------------------------------------------
+void reqNumb(int newsock, char* req)
+{
+	static int num = 10;
+	char buf[500] = { 0 };
+	memset(buf, '\0', 500);
+	strcat(buf, "HTTP/1.0 200 OK\r\n");
+	strcat(buf, "Content-Type: text/html;charset=UTF-8");
+	char contentLength[200] = { 0 };
+	sprintf(contentLength, "Content-Length: %ld\r\n\r\n%d", sizeof(num),num++);
+	strcat(buf, contentLength);
+	send(newsock, buf, strlen(buf), 0);
+	close(newsock);
 }
 //------------------------------------------------------------------------------
 int main(void)
@@ -109,7 +126,7 @@ int main(void)
 
 	///¶¨Òåsockaddr_in
 	struct sockaddr_in server_sockaddr;
-//	memset(&server_sockaddr, 0, sizeof(server_sockaddr));
+	memset(&server_sockaddr, 0, sizeof(server_sockaddr));
 	server_sockaddr.sin_family = AF_INET;
 	server_sockaddr.sin_port = htons(MYPORT);
 	server_sockaddr.sin_addr.s_addr = htonl(INADDR_ANY);

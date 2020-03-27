@@ -23,6 +23,7 @@ void writeStatus()
 
 	fp = fopen("../data/status.json", "w");
 	fputs(json, fp);
+	cJSON_free(json);
 	fclose(fp);
 }
 

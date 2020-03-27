@@ -30,6 +30,7 @@ typedef struct
 
 
 const char* getHeadType(const char* extname);
+void reqNumb(int newsock, char* req);
 
 /*
 

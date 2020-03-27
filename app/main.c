@@ -6,7 +6,7 @@
 #include "data.h"
 
 #define LEN  400
-#define TEST 0
+#define TEST 1
 
 unsigned char RxBuffer[LEN];
 data_t sys;
@@ -178,6 +178,7 @@ void writeGsm()
 
 	fp = fopen("../data/gsm.json", "w");
 	fputs(json, fp);
+	cJSON_free(json);
 	fclose(fp);
 }
 //----------------------------------------------------------------------------------

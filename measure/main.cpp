@@ -70,6 +70,7 @@ void writeMes()
 
 	fp = fopen("../data/mes.json", "w");
 	fputs(json, fp);
+	cJSON_free(json);
 	fclose(fp);
 }
 
